@@ -121,10 +121,10 @@ const FocusMode = ({ timer }: FocusModeProps) => {
   const progress = ((focusTime - currentSession) / focusTime) * 100;
 
   const FocusContent = () => (
-    <div className={`${isFullscreen ? 'min-h-screen bg-gradient-to-br from-upsc-focus/20 to-upsc-primary/20' : ''} flex flex-col justify-center items-center p-8`}>
+    <div className={`${isFullscreen ? 'min-h-screen bg-gradient-to-br from-focus/20 to-primary/20' : ''} flex flex-col justify-center items-center p-8`}>
       {/* Timer Display */}
       <div className="text-center mb-8">
-        <div className={`font-mono font-bold mb-4 ${isFullscreen ? 'text-8xl md:text-9xl' : 'text-6xl md:text-7xl'} text-upsc-focus`}>
+        <div className={`font-mono font-bold mb-4 ${isFullscreen ? 'text-8xl md:text-9xl' : 'text-6xl md:text-7xl'} text-focus`}>
           {formatTime(currentSession)}
         </div>
         <Progress 
@@ -149,44 +149,47 @@ const FocusMode = ({ timer }: FocusModeProps) => {
       </div>
 
       {/* Controls */}
-      <div className="flex items-center space-x-4 mb-8">
-        <Button 
-          onClick={toggleTimer}
-          size={isFullscreen ? "lg" : "default"}
-          className={`${isFullscreen ? 'px-8 py-4 text-lg' : 'px-6'} ${isTimerRunning ? 'bg-warning hover:bg-warning/90' : 'bg-upsc-focus hover:bg-upsc-focus/90'}`}
-        >
-          {isTimerRunning ? (
-            <>
-              <Pause className={`${isFullscreen ? 'w-6 h-6' : 'w-4 h-4'} mr-2`} />
-              Pause
-            </>
-          ) : (
-            <>
-              <Play className={`${isFullscreen ? 'w-6 h-6' : 'w-4 h-4'} mr-2`} />
-              {currentSession === focusTime ? 'Start' : 'Resume'}
-            </>
-          )}
-        </Button>
+      <div className="flex flex-col items-center space-y-4 mb-8">
+        <div className="flex items-center space-x-4">
+          <Button 
+            onClick={toggleTimer}
+            size={isFullscreen ? "lg" : "default"}
+            className={`${isFullscreen ? 'px-8 py-4 text-lg' : 'px-6'} ${isTimerRunning ? 'bg-warning hover:bg-warning/90' : 'bg-focus hover:bg-focus/90'}`}
+          >
+            {isTimerRunning ? (
+              <>
+                <Pause className={`${isFullscreen ? 'w-6 h-6' : 'w-4 h-4'} mr-2`} />
+                <span>Pause</span>
+              </>
+            ) : (
+              <>
+                <Play className={`${isFullscreen ? 'w-6 h-6' : 'w-4 h-4'} mr-2`} />
+                <span>{currentSession === focusTime ? 'Start' : 'Resume'}</span>
+              </>
+            )}
+          </Button>
+          
+          <Button onClick={resetTimer} variant="outline" size={isFullscreen ? "lg" : "default"}>
+            <RotateCcw className={`${isFullscreen ? 'w-6 h-6' : 'w-4 h-4'} mr-2`} />
+            <span>Reset</span>
+          </Button>
+        </div>
         
-        <Button onClick={resetTimer} variant="outline" size={isFullscreen ? "lg" : "default"}>
-          <RotateCcw className={`${isFullscreen ? 'w-6 h-6' : 'w-4 h-4'} mr-2`} />
-          Reset
-        </Button>
-
         {!isFullscreen && (
-          <Button onClick={toggleFullscreen} variant="outline">
+          <Button onClick={toggleFullscreen} variant="outline" className="w-full">
             <Maximize className="w-4 h-4 mr-2" />
-            Fullscreen
+            <span>Fullscreen</span>
           </Button>
         )}
 
         {isFullscreen && (
           <Button onClick={toggleFullscreen} variant="outline" size="lg">
             <Minimize className="w-6 h-6 mr-2" />
-            Exit Fullscreen
+            <span>Exit Fullscreen</span>
           </Button>
         )}
       </div>
+
 
       {/* Motivational Message */}
       {isTimerRunning && (
@@ -220,7 +223,7 @@ const FocusMode = ({ timer }: FocusModeProps) => {
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
             <Card className="max-w-md mx-4">
               <CardContent className="p-6 text-center">
-                <CheckCircle2 className="w-16 h-16 text-success mx-auto mb-4" />
+                <CheckCircle2 className="w-16 h-16 text-progress mx-auto mb-4" />
                 <h3 className="text-xl font-bold mb-2">Session Complete! 🎉</h3>
                 <p className="text-muted-foreground mb-4">
                   Great job! You completed a {focusTime/60}-minute focus session.
@@ -246,7 +249,7 @@ const FocusMode = ({ timer }: FocusModeProps) => {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0">
         <div>
           <h1 className="text-3xl font-bold text-foreground flex items-center">
-            <Target className="w-8 h-8 mr-3 text-upsc-focus" />
+            <Target className="w-8 h-8 mr-3 text-focus" />
             Focus Mode
           </h1>
           <p className="text-muted-foreground mt-1">
@@ -381,7 +384,7 @@ const FocusMode = ({ timer }: FocusModeProps) => {
                           {Math.round(session.duration / 60)} min • {session.date.toLocaleDateString()}
                         </p>
                       </div>
-                      <Badge variant="outline" className="text-success border-success">
+                      <Badge variant="outline" className="text-progress border-progress">
                         ✓ Done
                       </Badge>
                     </div>

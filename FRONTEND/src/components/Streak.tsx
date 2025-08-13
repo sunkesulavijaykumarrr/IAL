@@ -1,13 +1,25 @@
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { Flame } from "lucide-react";
+import { motion } from "framer-motion";
 
-const Streak = () => {
+interface StreakProps {
+  streakCount: number;
+}
+
+const Streak = ({ streakCount }: StreakProps) => {
   return (
     <HoverCard>
       <HoverCardTrigger asChild>
         <div className="hidden lg:flex items-center gap-1.5 px-2 py-1 rounded-lg text-orange-400 cursor-pointer transition-all duration-300">
           <Flame className="w-4 h-4" />
-          <span className="font-semibold text-xs">0</span>
+          <motion.span 
+            key={streakCount}
+            initial={{ y: -10, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            className="font-semibold text-xs"
+          >
+            {streakCount}
+          </motion.span>
         </div>
       </HoverCardTrigger>
       <HoverCardContent className="w-80 bg-card/90 backdrop-blur-xl border-border/50">
@@ -21,7 +33,7 @@ const Streak = () => {
               <div className="flex items-center pt-2">
                 <Flame className="mr-2 h-4 w-4 opacity-70" />{" "}
                 <span className="text-xs text-muted-foreground">
-                  Your current streak is 0 days.
+                  Your current streak is {streakCount} days.
                 </span>
               </div>
             </div>
